@@ -1,5 +1,19 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <BarChart />
   </div>
 </template>
+
+<script>
+import BarChart from "@/components/Charts/BarChart"
+export default {
+  components: {
+    BarChart
+  }
+
+}
+</script>
+
+<style>
+
+</style>
