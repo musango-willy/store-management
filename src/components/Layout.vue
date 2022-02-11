@@ -26,13 +26,13 @@
             <div class="side-bar">
                 <ul>
                     <li><span>Home</span></li>
-                    <li @click="dropDownEcheck()">
-                        <span>
+                    <li>
+                        <span @click="dropDownEcheck()">
                             E-check
                             <span v-show="!exactEcheckMenu" class="fa fa-caret-down"></span>
                             <span v-show="exactEcheckMenu" class="fa fa-caret-up"></span>
                         </span>
-                        <transition name="drop">
+                        <transition name="drop" mode="out-in">
                             <ul v-show="exactEcheckMenu">
                                 <li><router-link to="/checkout">Dashboard</router-link></li>
                                 <li><router-link to="/about">Receipts</router-link></li>
@@ -40,14 +40,14 @@
                             </ul>
                         </transition>
                     </li>
-                    <li @click="dropDownAdmin()">
-                        <span>
+                    <li>
+                        <span @click="dropDownAdmin()">
                             <span class="fa fa-charts"></span>
                             Admin
                             <span v-show="!exactAdminMenu" class="fa fa-caret-down"></span>
                             <span v-show="exactAdminMenu" class="fa fa-caret-up"></span>
                         </span>
-                        <transition name="drop">
+                        <transition name="drop" mode="out-in">
                             <ul v-show="exactAdminMenu">
                                 <li><router-link to="/">Dashboard</router-link></li>
                                 <li><router-link to="/about">Products</router-link></li>
@@ -56,11 +56,16 @@
                         </transition>
                     </li>
                 </ul>
+                <div class="side-footer">
+                    <ul>
+                        <li><span class="fa fa-facebook"></span></li>
+                        <li><span class="fa fa-facebook"></span></li>
+                        <li><span class="fa fa-facebook"></span></li>
+                        <li><span class="fa fa-reddit"></span></li>
+                    </ul>
+                </div>
             </div>
             <div class="context-side">
-                <!-- <transition name="routes" mode="out-in">
-                    <router-view/>
-                </transition> -->
                 <router-view v-slot="{ Component }">
                     <transition name="routes" mode="out-in">
                         <component :is="Component" />
@@ -77,7 +82,7 @@ export default {
     data() {
         return {
             echeckMenu: true,
-            adminMenu: false,
+            adminMenu: true,
         }
     },
     created() {
@@ -107,6 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .layout {
     position: relative;
     margin: 0;
@@ -120,14 +126,15 @@ export default {
     opacity: 0;
 }
 .routes-enter-active, .routes-leave-active {
-    transition: opacity 0.3s ease-out;
-}
-.drop-enter-active, .drop-leave-active {
-    transition: opacity 300ms ease-in-out;
+    transition: opacity 0.5s ease-out;
 }
 .drop-enter-from, .drop-leave-to {
     opacity: 0;
 }
+.drop-enter-active, .drop-leave-active {
+    transition: opacity 0.4s ease-in-out;
+}
+
 .top-bar {
     position: absolute;
     top: 0px;
@@ -222,24 +229,29 @@ export default {
     background-color: #cbcbcc;
 }
 .side-bar {
+    position: relative;
     float: left;
     // background: #aeaeaf;
     background: linear-gradient(to right, #94a6bb, #afafbb);
     color: #2c3e50;
     min-width: 200px;
     max-width: 250px;
-    height: 100%;
+    height: 93.5%;
     padding: 4px 10px;
+    border-top-right-radius: 4px;
     font-family: 'Poppins', sans-serif;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     ul {
-        width: 104%;
-        transition: height 250ms ease;
+        // width: 104%;
+        margin-bottom: 32%;
+        transition: height 250ms ease-in-out;
         li {
             list-style: none;
             line-height: 50px;
             padding: 0 4px;
-            cursor: pointer;
+            // cursor: pointer;
             border-bottom: 1px solid rgba(0,0,0,.4);
             span {
                 position: relative;
@@ -247,50 +259,89 @@ export default {
                 font-size: 16px;
                 span {
                     position: absolute;
-                    right: -120%;
+                    right: -170%;
                     top: -10%;
+                    width: 130%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     font-size: 17px;
+                    cursor: pointer;
+                    transition: color 250ms ease;
+                    &:hover {
+                        color: #ec111c;
+                    }
                 }
             }
 
             ul {
                 position: static;
+                padding: 0 15px;
+                margin: 0;
                 // display: none;
                 li {
                     line-height: 42px;
-                    padding: 0 24px;
+                    // padding: 0 24px;
                     border-bottom: none;
                     border-left: none;
                     a {
-                        color: #2c3e50;
+                        color: inherit;
                         text-decoration: none;
                         font-size: 14px;
-                        transition: color 250ms ease,
-                            font 250ms ease;
-                        &:hover {
-                            color: #000;
-                            font-size: 16px;
-                        }
+                        
                         &.router-link-exact-active {
-                            color: #000;
+                            color: #701079;
                             font-weight: 1000;
                         }
                     }
                     &:nth-child(1), &:nth-child(2),&:nth-child(3),
                     &:nth-child(4) {
+                        // width: 50%;
+                        transition: box-shadow 400ms ease;
+                        border-bottom: .1em solid #000;
                         &:hover {
+                            font-size: 16px;
+                            color: #642561;
                             border-left: 2px solid orangered;
+                            box-shadow: 0 0 25px rgba(0,0,0,.3);
 
                         }
+                    }
+                    &:last-of-type {
+                        border-bottom: none;
                     }
                 }
             }
             &:nth-child(1) {
-                transition: color 250ms ease;
+                cursor: pointer;
+                transition: color 250ms ease,
+                    box-shadow 400ms ease;
                 &:hover {
                     border-left: 2px solid cyan;
-                    color: cyan;
+                    color: #642561;
+                    box-shadow: 0 0 25px rgba(0,0,0,.3);
                 }
+            }
+        }
+    }
+    .side-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        margin: 6px 0;
+        width: 184px;
+        height: 6%;
+        box-shadow: 0 0 25px rgba(0,0,0,.3);
+        // height: 2px;
+
+        ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            li {
+                padding: 0 4px;
+                border-bottom: none;
             }
         }
     }
