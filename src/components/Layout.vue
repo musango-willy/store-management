@@ -131,8 +131,26 @@ export default {
 .drop-enter-from, .drop-leave-to {
     opacity: 0;
 }
-.drop-enter-active, .drop-leave-active {
-    transition: opacity 0.4s ease-in-out;
+.drop-enter-active {
+    animation: bounce-in 0.2s;
+    opacity: 0;
+    transition: opacity 0.45s ease-in-out;
+}
+.drop-leave-active {
+    animation: bounce-in 0.2s reverse;
+    opacity: 0;
+    transition: opacity 0.45s ease-in-out;
+}
+@keyframes bounce-in {
+  0% {
+    margin-top: -50px;
+  }
+//   50% {
+//     margin-top: -25px;
+//   }
+  100% {
+    margin-top: 0px;
+  }
 }
 
 .top-bar {
