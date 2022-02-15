@@ -29,7 +29,7 @@
                             <tbody>
                                 <tr>
                                     <td><span>Mumias Sugar</span></td>
-                                    <td><span><input type="number" name="" value="1" id="" min="1"></span></td>
+                                    <td><span><input type="number" ref="changeQuantity" name="" value="1" id=""></span></td>
                                     <td><span>1 Kg</span></td>
                                     <td><span>Ksh. 240</span></td>
                                 </tr>
@@ -74,8 +74,17 @@ export default {
     data() {
         return {
             dismissible: true,
-            itemFound: false,
+            itemFound: true,
         }
+    },
+    created() {
+        document.addEventListener('keyup', (event) => {
+            const keyName = event.key;
+
+            if (keyName === '/') {
+                this.$refs.changeQuantity.focus();
+            }
+        }, false);
     },
     methods: {
         dismiss() {
@@ -141,7 +150,7 @@ export default {
 
     .left-top {
         width: 100%;
-        height: 200px;
+        height: 150px;
         border-bottom: 1px solid #000;
     }
     .form-check {
