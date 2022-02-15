@@ -12,29 +12,41 @@
                 <li>
                     <span>1</span>
                     <span>
-                        <span class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</span>
-                        <span class="right-spa">100 g</span>
+                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
+                        <h6>100 g</h6>
                     </span>
                     <span>Ksh. 120</span>
                 </li>
                 <li>
-                    <span>2</span>
-                    <span>Dormans Coffee <span>100 g</span></span>
+                    <span>1</span>
+                    <span>
+                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
+                        <h6>100 g</h6>
+                    </span>
                     <span>Ksh. 120</span>
                 </li>
                 <li>
-                    <span>2</span>
-                    <span>Dormans Coffee <span>100 g</span></span>
+                    <span>1</span>
+                    <span>
+                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
+                        <h6>100 g</h6>
+                    </span>
                     <span>Ksh. 120</span>
                 </li>
                 <li>
-                    <span>2</span>
-                    <span>Dormans Coffee <span>100 g</span></span>
+                    <span>1</span>
+                    <span>
+                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
+                        <h6>100 g</h6>
+                    </span>
                     <span>Ksh. 120</span>
                 </li>
                 <li>
-                    <span>2</span>
-                    <span>Dormans Coffee <span>100 g</span></span>
+                    <span>1</span>
+                    <span>
+                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
+                        <h6>100 g</h6>
+                    </span>
                     <span>Ksh. 120</span>
                 </li>
 
@@ -120,7 +132,9 @@ export default {
             display: flex;
             align-items: center;
             height: 38px;
-            border-bottom: 1px solid #000;
+            border-bottom: 1px dotted;
+            transition: height 250ms ease-in-out,
+                background 250ms ease-in-out;
             span {
                 font-weight: 500;
                 
@@ -128,25 +142,25 @@ export default {
                     text-align: center;
                     width: 15%;
                     font-weight: 1000;
+
                 }
                 &:nth-child(2) {
+                    display: flex;
                     width: 61%;
-                    span {
+                    p {
+                        margin-right: 3px;
+                        width: 65%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    h6 {
+                        padding: 0 1px;
                         font-weight: inherit;
-                        width: 100%;
-                        .left-spa {
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            margin-left: 6px;
-                            width: 60%;
-                            font-weight: inherit;
-                            background: #5a5e5d;
-                        }
-                        .right-spa {
-                            width: 40%;
-                            background: #bac;
-                        }
+                        width: 35%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 }
                 &:last-child {
@@ -154,12 +168,9 @@ export default {
                     padding: 0 4px;
                 }
             }
-            &:last-child {
-                border-bottom: 2px solid #900;
-            }
             &:hover {
+                height: 42px;
                 background: #88ada5;
-                transform: scale(1.01);
                 cursor: pointer;
             }
         }
@@ -171,6 +182,7 @@ export default {
     background: #5a5e5d;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
+    border-top: 2px solid #fc0410;
 
     ul {
         list-style: none;

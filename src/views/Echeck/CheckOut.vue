@@ -15,25 +15,31 @@
                         <span class="fa fa-search"></span>
                     </button>
                 </form>
-                <table class="item-change">
-                    <thead>
-                        <tr>
-                            <th><span>Item</span></th>
-                            <th><span>Quantity</span></th>
-                            <th><span>Category</span></th>
-                            <th><span>Total</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span>Mumias Sugar</span></td>
-                            <td><span>2</span></td>
-                            <td><span>1 Kg</span></td>
-                            <td><span>Ksh. 240</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="add-cart">Add to Cart</button>
+                <transition name="changeitems" mode="out-in">
+                    <div v-show="itemFound">
+                        <table class="item-change">
+                            <thead>
+                                <tr>
+                                    <th><span>Item</span></th>
+                                    <th><span>Quantity</span></th>
+                                    <th><span>Category</span></th>
+                                    <th><span>Total</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span>Mumias Sugar</span></td>
+                                    <td><span><input type="number" name="" value="1" id="" min="1"></span></td>
+                                    <td><span>1 Kg</span></td>
+                                    <td><span>Ksh. 240</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="add-cart">
+                            Add to Cart
+                        </button>
+                    </div>
+                </transition>
             </div>
             <button v-show="dismissible" @click="dismiss()">Dismis</button>
             <button v-show="!dismissible" @click="renderr()">Render</button>
@@ -68,6 +74,7 @@ export default {
     data() {
         return {
             dismissible: true,
+            itemFound: false,
         }
     },
     methods: {
@@ -81,7 +88,6 @@ export default {
                 let scrol = document.getElementById("leftscroll");
                 scrol.scrollTop = 250;
             }, 10);
-            // clearInterval(scrollInt);
             return
         }
     },
@@ -108,6 +114,15 @@ export default {
     opacity: 0;
     height: 0px;
 }
+.changeitems-enter-active, .changeitems-leave-active {
+    transition: opacity 0.3s ease-out,
+        height 0.4s ease-in-out;
+}
+.changeitems-enter-from, .changeitems-leave-to {
+    opacity: 0;
+    height: 0px;
+}
+
 .check-out {
     position: relative;
     display: flex;
@@ -236,8 +251,34 @@ export default {
             td {
                 height: 45px;
                 span {
-                    padding: 0 10px;
+                    padding: 0 8px;
                     font-weight: 600;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    input {
+                        text-align: center;
+                        height: 42px;
+                        width: 100px;
+                        border: none;
+                        border-bottom: 2px solid #31cf31;
+                        // border-radius: 8px;
+                        border-top-right-radius: 4px;
+                        border-top-left-radius: 4px;
+                        outline: none;
+                        font-weight: 700;
+                        font-size: 20px;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        background: transparent;
+                        transition: border 250ms ease-in-out,
+                            box-shadow 250ms ease-in-out;
+                    }
+                    &:hover {
+                        input {
+                            border-bottom: 2px solid #ed47f3;
+                            box-shadow: 0 0 3px #000;
+                        }
+                    }
                 }
                 &:nth-of-type(2), &:nth-of-type(3),
                 &:nth-of-type(4) {
@@ -283,22 +324,6 @@ export default {
         width: 100%;
         height: 80px;
         background: #abc;
-    }
-}
-@media print {
-    * {
-        background: transparent !important;
-        color: #000 !important;
-        box-shadow: none !important;
-        text-shadow: none !important;
-    }
-    .left,
-    .total-amount {
-        display: none;
-    }
-    .receipt-list {
-        width: 100vw;
-        height: 100vh;
     }
 }
 </style>

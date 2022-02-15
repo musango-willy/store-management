@@ -19,11 +19,27 @@ export default {
 <style lang="scss" scoped>
 .page {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-evenly;
     align-items: center;
     padding: 4px;
     height: 100%;
     width: 100%;
+}
+.icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #a0a7acec;
+    height: 50%;
+    width: 30px;
+    border-radius: 20%;
+    cursor: pointer;
+    transition: background 250ms ease-in-out,
+        transform 250ms ease-in-out;
+    &:hover {
+        background: #508074ec;
+        transform: scale3d(1.3, 1.1, 1.1);
+    }
 }
 .btn {
     padding: 0 8px;

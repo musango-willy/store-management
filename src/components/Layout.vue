@@ -34,9 +34,9 @@
                         </span>
                         <transition name="drop" mode="out-in">
                             <ul v-show="exactEcheckMenu">
-                                <li><router-link to="/checkout">Dashboard</router-link></li>
-                                <li><router-link to="/about">Receipts</router-link></li>
-                                <li><router-link to="/about">Total</router-link></li>
+                                <li><router-link to="/checkout"><button>Dashboard</button></router-link></li>
+                                <li><router-link to="/about"><button>Receipts</button></router-link></li>
+                                <li><router-link to="/about"><button>Total</button></router-link></li>
                             </ul>
                         </transition>
                     </li>
@@ -49,9 +49,9 @@
                         </span>
                         <transition name="drop" mode="out-in">
                             <ul v-show="exactAdminMenu">
-                                <li><router-link to="/">Dashboard</router-link></li>
-                                <li><router-link to="/about">Products</router-link></li>
-                                <li><router-link to="/about">Inventories</router-link></li>
+                                <li><router-link to="/"><button>Dashboard</button></router-link></li>
+                                <li><router-link to="/about"><button>Products</button></router-link></li>
+                                <li><router-link to="/about"><button>Inventories</button></router-link></li>
                             </ul>
                         </transition>
                     </li>
@@ -307,10 +307,30 @@ export default {
                         color: inherit;
                         text-decoration: none;
                         font-size: 14px;
+                        button {
+                            width: 100%;
+                            height: 40px;
+                            background: transparent;
+                            border: none;
+                            cursor: pointer;
+                            text-align: left;
+                            transition: color 250ms ease,
+                                padding 300ms ease;
+                            &:hover {
+                                padding: 0 4px;
+                                color: #0e3f6d;
+                                font-weight: bold;
+                            }
+                        }
                         
                         &.router-link-exact-active {
-                            color: #701079;
-                            font-weight: 1000;
+                            button {
+                                padding: 0 4px;
+                                letter-spacing: 1px;
+                                color: #642561;
+                                box-shadow: 0 0 5px #000;
+                                transform: scale3d(1.08,1,1.1);
+                            }
                         }
                     }
                     &:nth-child(1), &:nth-child(2),&:nth-child(3),
@@ -319,23 +339,23 @@ export default {
                         transition: box-shadow 400ms ease;
                         border-bottom: .1em solid #000;
                         &:hover {
-                            font-size: 16px;
-                            color: #642561;
                             border-left: 2px solid orangered;
-                            box-shadow: 0 0 25px rgba(0,0,0,.3);
+                            box-shadow: 0 0 5px #000;
 
                         }
                     }
                     &:last-of-type {
-                        border-bottom: none;
+                        margin-bottom: 4px;
                     }
                 }
             }
             &:nth-child(1) {
                 cursor: pointer;
                 transition: color 250ms ease,
-                    box-shadow 400ms ease;
+                    padding 250ms ease,
+                    box-shadow 250ms ease;
                 &:hover {
+                    padding: 0 6px;
                     border-left: 2px solid cyan;
                     color: #642561;
                     box-shadow: 0 0 25px rgba(0,0,0,.3);
