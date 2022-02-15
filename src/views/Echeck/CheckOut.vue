@@ -33,18 +33,23 @@
                         </tr>
                     </tbody>
                 </table>
+                <button class="add-cart">Add to Cart</button>
             </div>
             <button v-show="dismissible" @click="dismiss()">Dismis</button>
             <button v-show="!dismissible" @click="renderr()">Render</button>
-            <transition name="poplist" mode="out-in">
-                <ListItems v-show="dismissible"/>
-            </transition>
-            <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, necessitatibus officiis tempore vero quaerat repudiandae aspernatur! Maxime necessitatibus cupiditate tempora, dolores quibusdam sed distinctio, dolorum debitis, modi ea enim sequi.</h1>
-            <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, necessitatibus officiis tempore vero quaerat repudiandae aspernatur! Maxime necessitatibus cupiditate tempora, dolores quibusdam sed distinctio, dolorum debitis, modi ea enim sequi.</h1>
-            
+            <div class="list-request" v-show="dismissible">
+                <transition name="poplist" mode="out-in">
+                    <ListItems v-show="dismissible"/>
+                </transition>
+            </div>
         </div>
         <div class="right">
-            <h2>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia velit explicabo eius, placeat commodi expedita! Autem rerum, saepe voluptates delectus recusandae sunt aperiam culpa corporis nostrum eaque. Accusamus, perferendis quo.</h2>
+            <div class="receipt-list">
+                <Receipt />
+            </div>
+            <div class="total-amount">
+                <BuyOut />
+            </div>
         </div>
 
     </div>
@@ -52,31 +57,29 @@
 
 <script>
 import ListItems from "@/components/E_check/requestItems"
+import Receipt from "@/components/E_check/Receipt"
+import BuyOut from "@/components/E_check/BuyItems"
 export default {
     components: {
         ListItems,
+        Receipt,
+        BuyOut,
     },
     data() {
         return {
-            dismissible: false,
+            dismissible: true,
         }
     },
     methods: {
         dismiss() {
-            let scrol = document.getElementById("leftscroll");
-            let pos = scrol.scrollTop;
-            console.log(pos);
             this.dismissible = !this.dismissible;
-            scrol.scrollTop = 10;
             return
         },
         renderr() {
             this.dismissible = !this.dismissible;
             setTimeout(function () {
                 let scrol = document.getElementById("leftscroll");
-                let pos = scrol.scrollTop;
-                console.log(pos);
-                scrol.scrollTop = 200;
+                scrol.scrollTop = 250;
             }, 10);
             // clearInterval(scrollInt);
             return
@@ -99,7 +102,7 @@ export default {
 }
 .poplist-enter-active, .poplist-leave-active {
     transition: opacity 0.3s ease-out,
-        height 0.2s ease-in-out;
+        height 0.4s ease-in-out;
 }
 .poplist-enter-from, .poplist-leave-to {
     opacity: 0;
@@ -119,7 +122,6 @@ export default {
     padding: 8px;
     width: 60%;
     height: 92.8vh;
-    border-right: 1px solid #1d2e21;
     overflow-y: auto;
 
     .left-top {
@@ -128,13 +130,33 @@ export default {
         border-bottom: 1px solid #000;
     }
     .form-check {
-        margin-top: 100px;
+        position: relative;
+        margin-top: 10px;
         margin-bottom: 15px;
+        padding: 4px 4px;
         width: 98%;
         min-height: 80px;
-        border-top: 1px solid #000;
-        border-bottom: 1px solid #000;
-        box-shadow: 0px 0px 6px #000;
+        max-height: 180px;
+        box-shadow: 0px 0px 4px #000;
+
+        .add-cart {
+            position: absolute;
+            right: 15px;
+            bottom: 8px;
+            padding: 0 5px;
+            height: 50px;
+            font-weight: 800;
+            background: #448eee;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 300ms ease,
+                transform 250ms ease;
+            &:hover {
+                background: #0a52af;
+                transform: scale3d(1.1, 1.05, 1.1);
+            }
+        }
 
         form {
             position: relative;
@@ -143,7 +165,7 @@ export default {
             width: 100%;
             input[type='text'] {
                 padding: 0 8px;
-                width: 70%;
+                width: 76%;
                 height: 60px;
                 font-size: 26px;
                 font-weight: 600;
@@ -190,7 +212,7 @@ export default {
     }
     .item-change {
         // display: none;
-        margin: 25px 0 15px 20px;
+        margin: 15px 0px 4px 5px;
         width: 80%;
         min-height: 50%;
         border-radius: 4px;
@@ -232,15 +254,51 @@ export default {
         }
     }
 }
+.list-request {
+    position: relative;
+    margin-bottom: 10px;
+    height: 300px;
+    width: 84%;
+}
 .right {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     width: 40%;
-    height: 92.5vh;
+    height: 92.9vh;
     padding: 8px;
     margin: 0;
     border-top-left-radius: 4px;
-    border-bottom-left-radius: 6px;
     overflow-y: auto;
-    // box-shadow: -1px -9px 12px 5px #000;
-    box-shadow: 0px 0px 20px #000;
+    box-shadow: 0px 2px 8px -2px #000;
+
+    .receipt-list {
+        width: 90%;
+        min-height: 400px;
+        max-height: 500px;
+        border-radius: 4px;
+        background: #abc;
+    }
+    .total-amount {
+        width: 100%;
+        height: 80px;
+        background: #abc;
+    }
+}
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    .left,
+    .total-amount {
+        display: none;
+    }
+    .receipt-list {
+        width: 100vw;
+        height: 100vh;
+    }
 }
 </style>

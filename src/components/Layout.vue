@@ -236,7 +236,7 @@ export default {
     border-bottom-left-radius: 100%;
     border-bottom-right-radius: 100%;
     // background: transparent;
-    background: linear-gradient(to right, #2dceda, #e669c6);
+    background: linear-gradient(to right, #cf3baa, #2dceda);
 }
 .body-content {
     position: relative;
@@ -260,6 +260,7 @@ export default {
     font-family: 'Poppins', sans-serif;
     overflow-y: auto;
     overflow-x: hidden;
+    box-shadow: 0 0 3px #000;
 
     ul {
         // width: 104%;
@@ -367,5 +368,19 @@ export default {
 .context-side {
     padding: 0;
     margin: 0;
+}
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    .side-bar,
+    .top-liner,
+    .top-bar {
+        display: none;
+    }
 }
 </style>
