@@ -28,7 +28,7 @@
                     <li><span>Home</span></li>
                     <li>
                         <span @click="dropDownEcheck()">
-                            E-check
+                            <button>E-check</button>
                             <span v-show="!exactEcheckMenu" class="fa fa-caret-down"></span>
                             <span v-show="exactEcheckMenu" class="fa fa-caret-up"></span>
                         </span>
@@ -43,7 +43,7 @@
                     <li>
                         <span @click="dropDownAdmin()">
                             <span class="fa fa-charts"></span>
-                            Admin
+                            <router-link to="/admin"><button>Admin</button></router-link>
                             <span v-show="!exactAdminMenu" class="fa fa-caret-down"></span>
                             <span v-show="exactAdminMenu" class="fa fa-caret-up"></span>
                         </span>
@@ -251,7 +251,7 @@ export default {
     float: left;
     // background: #aeaeaf;
     background: linear-gradient(to right, #94a6bb, #afafbb);
-    color: #2c3e50;
+    // color: #2c3e50;
     min-width: 200px;
     max-width: 250px;
     height: 93.5%;
@@ -270,17 +270,36 @@ export default {
             list-style: none;
             line-height: 50px;
             padding: 0 4px;
-            // cursor: pointer;
             border-bottom: 1px solid rgba(0,0,0,.4);
             span {
                 position: relative;
                 font-weight: 1000;
                 font-size: 16px;
+
+                button {
+                    width: 100%;
+                    height: 40px;
+                    padding: 0 3px;
+                    text-align: left;
+                    background: transparent;
+                    height: 36px;
+                    border: none;
+                    border-radius: 4px;
+                    font-weight: 1000;
+                    color: #2c3e50;
+                    cursor: pointer;
+                    transition: box-shadow 300ms ease,
+                        padding 300ms ease;
+                    &:hover {
+                        padding: 0 6px;
+                        box-shadow: 0 0 3px #000;
+                    }
+                }
                 span {
                     position: absolute;
-                    right: -170%;
+                    right: 0%;
                     top: -10%;
-                    width: 130%;
+                    width: 35%;
                     display: flex;
                     justify-content: center;
                     align-items: center;

@@ -1,5 +1,5 @@
 <template>
-    <div class="check-out">
+    <div class="check-out" id="check-out-page">
         <div class="left" id="leftscroll">
             <div class="left-top">
                 <h6>Hey You</h6>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+// import axios from 'axios'
 import ListItems from "@/components/E_check/requestItems"
 import Receipt from "@/components/E_check/Receipt"
 import BuyOut from "@/components/E_check/BuyItems"
@@ -98,7 +99,7 @@ export default {
                 scrol.scrollTop = 250;
             }, 10);
             return
-        }
+        },
     },
 
 }

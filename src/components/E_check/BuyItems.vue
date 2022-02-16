@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" id="page-print">
       <div class="icons">
           <span class="fa fa-print"></span>
       </div>

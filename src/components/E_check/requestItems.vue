@@ -1,6 +1,6 @@
 <template>
   <div class="item-list">
-    <div class="ul-lists">
+    <div class="ul-lists" v-show="itemsPresent">
       <ul>
         <li>
           <span>Mumias Sugar</span>
@@ -28,6 +28,11 @@
         </li>
       </ul>
     </div>
+    <div class="alternative" v-show="itemsNotPresent">
+      <p>no products searched yet ...</p>
+      <!-- <p>no products</p> -->
+      <!-- <p>no</p> -->
+    </div>
   </div>
 </template>
 
@@ -36,8 +41,16 @@ export default {
     name: "ListItems",
     data() {
       return {
-        noItem: false,
+        noItem: true,
       }
+    },
+    computed: {
+      itemsPresent() {
+        return this.noItem;
+      },
+      itemsNotPresent() {
+        return !this.noItem;
+      },
     },
 
 }
@@ -55,7 +68,7 @@ export default {
 }
 .ul-lists {
   padding: 4px 8px;
-  width: 99%;
+  width: 92%;
   height: 100%;
   background: #abc;
   border-radius: 4px;
@@ -83,16 +96,16 @@ export default {
         font-weight: 600;
         &:nth-child(1) {
           padding: 0 8px;
-          width: 250px;
+          width: 50%;
         }
         &:nth-child(2), &:nth-child(3) {
           padding: 0 8px;
-          width: 100px;
+          width: 20%;
         }
         &:last-child {
           justify-content: center;
           margin: 2px;
-          width: 40px;
+          width: 10%;
           
           
         }
@@ -119,5 +132,37 @@ export default {
   }
 }
 
+.alternative {
+  display: inline-flex;
+  // justify-content: center;
+  // align-items: center;
+  margin: 0 8px;
+  padding: 8px 4px;
+  max-height: 100%;
+  width: 92%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #b6b6b9, #7c8791f3);
+
+  p {
+    display: flex;
+    width: 100%;
+    height: 20px;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
+    animation: scrolling 10s linear infinite;
+
+    @keyframes scrolling {
+      0% {
+        transform: translateX(50%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  }
+}
 
 </style>
