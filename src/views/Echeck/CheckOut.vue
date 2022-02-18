@@ -5,11 +5,12 @@
                 <h6>Hey You</h6>
             </div>
             <div class="form-check">
-                <form action="" @submit.prevent="" class="items-form">
+                <form action="" @submit.prevent="getItems()" class="items-form">
                     <input
                         type="text" name="" autocomplete="off"
+                        v-model="requestTag"
                         autocorrect="off" id="request-item"
-                        placeholder="Search and Enter items ..."
+                        placeholder="Search for items . . ."
                     >
                     <button type="submit">
                         <span class="fa fa-search"></span>
@@ -17,35 +18,47 @@
                 </form>
                 <transition name="changeitems" mode="out-in">
                     <div v-show="itemFound">
-                        <table class="item-change">
-                            <thead>
-                                <tr>
-                                    <th><span>Item</span></th>
-                                    <th><span>Quantity</span></th>
-                                    <th><span>Category</span></th>
-                                    <th><span>Total</span></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span>Mumias Sugar</span></td>
-                                    <td><span><input type="number" ref="changeQuantity" name="" value="1" id=""></span></td>
-                                    <td><span>1 Kg</span></td>
-                                    <td><span>Ksh. 240</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button class="add-cart">
+                        <transition name="popspinner" mode="out-in">
+                            <table class="item-change" v-show="priceESection">
+                                <thead>
+                                    <tr>
+                                        <th><span>Item</span></th>
+                                        <th><span>Quantity</span></th>
+                                        <th><span>Category</span></th>
+                                        <th><span>Total</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span>Mumias Sugar</span></td>
+                                        <td><span><input type="number" ref="changeQuantity" name="" value="1" id=""></span></td>
+                                        <td><span>1 Kg</span></td>
+                                        <td><span>Ksh. 240</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </transition>
+                        <button class="add-cart" v-show="priceESection">
                             Add to Cart
                         </button>
                     </div>
                 </transition>
             </div>
+            <button @click="open = true">Open Modal</button>
             <button v-show="dismissible" @click="dismiss()">Dismis</button>
             <button v-show="!dismissible" @click="renderr()">Render</button>
-            <div class="list-request" v-show="dismissible">
+            <div
+                class="list-request"
+                v-show="dismissible"
+                :class="{ loadingitems: loadingrequest }"
+            >
                 <transition name="poplist" mode="out-in">
-                    <ListItems v-show="dismissible"/>
+                    <ListItems
+                        :itemsFound="foundList"
+                        :noItem="itemsNull"
+                        v-show="dismissible"
+                        @selectItem="chooseItem"
+                    />
                 </transition>
             </div>
         </div>
@@ -57,25 +70,44 @@
                 <BuyOut />
             </div>
         </div>
-
+        <transition name="popspinner" mode="out-in">
+            <DualRing v-show="loadingspinner"/>
+        </transition>
+        <Teleport to="body">
+            <div v-if="open" class="modal">
+                <p>Hello from the modal!</p>
+                <button @click="open = false">Close</button>
+            </div>
+        </Teleport>
     </div>
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import ListItems from "@/components/E_check/requestItems"
 import Receipt from "@/components/E_check/Receipt"
 import BuyOut from "@/components/E_check/BuyItems"
+import DualRing from "@/components/Others/DualRing"
 export default {
     components: {
         ListItems,
         Receipt,
         BuyOut,
+        DualRing,
     },
     data() {
         return {
+            open: null,
             dismissible: true,
             itemFound: true,
+            requestTag: null,
+            loading: false,
+            requestFromApi: false,
+            foundList: null,
+            itemsNull: false, // toggle data for items component
+            quantityEdit: true, // edit quantity and price toggle
+            editSelected: null, // change price before adding receipt
+
         }
     },
     created() {
@@ -88,6 +120,28 @@ export default {
         }, false);
     },
     methods: {
+        async getItems() {
+            this.loading = !this.loading;
+            this.requestFromApi = !this.requestFromApi;
+            if (this.requestTag === "") {
+                this.foundList = null;
+                this.loading = !this.loading;
+                this.requestFromApi = !this.requestFromApi;
+                return;
+            } else {
+                try {
+                    const res = await axios.get(`get_item/${ this.requestTag }`)
+                    this.requestTag = "";
+                    this.itemsNull = true;
+                    this.foundList = res.data;
+                } catch(e) {
+                    console.error(e);
+                }
+                this.loading = !this.loading;
+                this.requestFromApi = !this.requestFromApi;
+                return;
+            }
+        },
         dismiss() {
             this.dismissible = !this.dismissible;
             return
@@ -100,6 +154,22 @@ export default {
             }, 10);
             return
         },
+        chooseItem(index) {
+            const data = this.foundList[index]
+            console.log(data);
+            return;
+        }
+    },
+    computed: {
+        loadingrequest() {
+            return this.requestFromApi;
+        },
+        loadingspinner() {
+            return this.loading;
+        },
+        priceESection() {
+            return this.quantityEdit
+        }
     },
 
 }
@@ -132,6 +202,25 @@ export default {
     opacity: 0;
     height: 0px;
 }
+.popspinner-enter-active, .popspinner-leave-active {
+    transition: opacity 0.3s ease-out;
+}
+.popspinner-enter-from, .popspinner-leave-to {
+    opacity: 0;
+}
+.modal {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  top: 20%;
+  left: 50%;
+  width: 300px;
+  height: 40%;
+  margin-left: -150px;
+  background: #fff;
+}
 
 .check-out {
     position: relative;
@@ -141,13 +230,16 @@ export default {
     color: #000;
     font-size: 20px;
     overflow: auto;
+    // background: #abc;
 }
 .left {
     scroll-snap-type: mandatory;
     padding: 8px;
+    margin: 0 4px 0 0;
     width: 60%;
     height: 92.8vh;
     overflow-y: auto;
+    background: #b8b8b9;
 
     .left-top {
         width: 100%;
@@ -163,6 +255,7 @@ export default {
         min-height: 80px;
         max-height: 180px;
         box-shadow: 0px 0px 4px #000;
+        transition: height 250ms ease-in-out;
 
         .add-cart {
             position: absolute;
@@ -305,11 +398,15 @@ export default {
         }
     }
 }
+.loadingitems {
+    filter: blur(2px);
+}
 .list-request {
     position: relative;
     margin-bottom: 10px;
     height: 300px;
     width: 84%;
+    transition: filter 200ms ease-in-out;
 }
 .right {
     display: flex;
@@ -318,10 +415,11 @@ export default {
     width: 40%;
     height: 92.9vh;
     padding: 8px;
-    margin: 0;
+    margin: 0 0 0 8px;
     border-top-left-radius: 4px;
+    background: #b8b8b9;
     overflow-y: auto;
-    box-shadow: 0px 2px 8px -2px #000;
+    // box-shadow: 0px 2px 8px -2px #000;
 
     .receipt-list {
         width: 90%;
@@ -336,4 +434,6 @@ export default {
         background: #abc;
     }
 }
+
+
 </style>

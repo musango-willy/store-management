@@ -1,37 +1,21 @@
 <template>
   <div class="item-list">
     <div class="ul-lists" v-show="itemsPresent">
-      <ul>
-        <li>
-          <span>Mumias Sugar</span>
-          <span>100 g</span>
-          <span>Ksh. 60</span>
-          <span class="fa fa-add"></span>
-        </li>
-        <li>
-          <span>Mumias Sugar</span>
-          <span>100 g</span>
-          <span>Ksh. 60</span>
-          <span class="fa fa-add"></span>
-        </li>
-        <li>
-          <span>Mumias Sugar</span>
-          <span>100 g</span>
-          <span>Ksh. 60</span>
-          <span class="fa fa-add"></span>
-        </li>
-        <li>
-          <span>Mumias Sugar</span>
-          <span>100 g</span>
-          <span>Ksh. 60</span>
-          <span class="fa fa-add"></span>
-        </li>
-      </ul>
+      <transition-group name="item-list">
+        <ul
+          v-for="(item, index) in requestedFound" :key="index"
+        >
+          <li @dblclick="$emit('selectItem', index)">
+            <span>{{item.name}}</span>
+            <span>{{item.quantity_category}}</span>
+            <span>Ksh. {{item.price}}</span>
+            <span class="fa fa-add"></span>
+          </li>
+        </ul>
+      </transition-group>
     </div>
     <div class="alternative" v-show="itemsNotPresent">
       <p>no products searched yet ...</p>
-      <!-- <p>no products</p> -->
-      <!-- <p>no</p> -->
     </div>
   </div>
 </template>
@@ -39,10 +23,9 @@
 <script>
 export default {
     name: "ListItems",
-    data() {
-      return {
-        noItem: true,
-      }
+    props: {
+      itemsFound: Object,
+      noItem: Boolean,
     },
     computed: {
       itemsPresent() {
@@ -51,6 +34,9 @@ export default {
       itemsNotPresent() {
         return !this.noItem;
       },
+      requestedFound() {
+        return this.itemsFound;
+      }
     },
 
 }
@@ -62,13 +48,22 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+.item-list-enter-active,
+.item-list-leave-active {
+  transition: all 0.5s ease;
+}
+.item-list-enter-from,
+.item-list-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
 .item-list {
   height: 100%;
   overflow-y: auto;
 }
 .ul-lists {
   padding: 4px 8px;
-  width: 92%;
+  width: 100%;
   height: 100%;
   background: #abc;
   border-radius: 4px;
