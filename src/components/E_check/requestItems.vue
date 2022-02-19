@@ -55,7 +55,7 @@ export default {
 .item-list-enter-from,
 .item-list-leave-to {
   opacity: 0;
-  transform: translateY(-30px);
+  transform: translateX(-30px);
 }
 .item-list {
   height: 100%;

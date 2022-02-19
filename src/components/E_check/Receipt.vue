@@ -8,47 +8,18 @@
             </ul>
         </div>
         <div class="list-body">
-            <ul>
+            <ul
+                v-for="(item, index) in itemList" :key="index"
+            >
                 <li>
-                    <span>1</span>
+                    <span>{{ item.quantity }}</span>
                     <span>
-                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
-                        <h6>100 g</h6>
+                        <p class="left-spa">{{item.name}}</p>
+                        <h6>{{item.quantity_category}}</h6>
                     </span>
-                    <span>Ksh. 120</span>
+                    <span>{{item.price}}</span>
                 </li>
-                <li>
-                    <span>1</span>
-                    <span>
-                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
-                        <h6>100 g</h6>
-                    </span>
-                    <span>Ksh. 120</span>
-                </li>
-                <li>
-                    <span>1</span>
-                    <span>
-                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
-                        <h6>100 g</h6>
-                    </span>
-                    <span>Ksh. 120</span>
-                </li>
-                <li>
-                    <span>1</span>
-                    <span>
-                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
-                        <h6>100 g</h6>
-                    </span>
-                    <span>Ksh. 120</span>
-                </li>
-                <li>
-                    <span>1</span>
-                    <span>
-                        <p class="left-spa">Dormans efjaijfioqe fqojifjoeiq Coffee</p>
-                        <h6>100 g</h6>
-                    </span>
-                    <span>Ksh. 120</span>
-                </li>
+                
 
             </ul>
         </div>
@@ -58,12 +29,22 @@
                 <li><span>Ksh. 1000</span></li>
             </ul>
         </div>
+        {{itemList}}
     </div>
 </template>
 
 <script>
 export default {
     name: "Receipt",
+    props: {
+        listToBuy: Object,// items of list to add to receipt
+
+    },
+    computed: {
+        itemList() {
+            return this.listToBuy;
+        }
+    },
 
 }
 </script>

@@ -19,7 +19,7 @@
                 <transition name="changeitems" mode="out-in">
                     <div v-show="itemFound">
                         <transition name="popspinner" mode="out-in">
-                            <table class="item-change" v-show="priceESection">
+                            <table class="item-change" v-if="editSelected != []">
                                 <thead>
                                     <tr>
                                         <th><span>Item</span></th>
@@ -30,15 +30,15 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><span>Mumias Sugar</span></td>
-                                        <td><span><input type="number" ref="changeQuantity" name="" value="1" id=""></span></td>
-                                        <td><span>1 Kg</span></td>
-                                        <td><span>Ksh. 240</span></td>
+                                        <td><span>{{this.editSelected[0].name}}</span></td>
+                                        <td><span><input type="number" ref="changeQuantity" v-model="quantity" name=""></span></td>
+                                        <td><span>{{this.editSelected[0].quantity_category}}</span></td>
+                                        <td><span>{{this.editSelected[0].price}}</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </transition>
-                        <button class="add-cart" v-show="priceESection">
+                        <button class="add-cart" v-show="priceESection" @click="addReceipt()">
                             Add to Cart
                         </button>
                     </div>
@@ -64,7 +64,7 @@
         </div>
         <div class="right">
             <div class="receipt-list">
-                <Receipt />
+                <Receipt :listToBuy="receiptList" />
             </div>
             <div class="total-amount">
                 <BuyOut />
@@ -106,7 +106,9 @@ export default {
             foundList: null,
             itemsNull: false, // toggle data for items component
             quantityEdit: true, // edit quantity and price toggle
-            editSelected: null, // change price before adding receipt
+            editSelected: [], // change price before adding receipt
+            quantity: 1, // change selected item quantity
+            receiptList: null, // items to be bought list
 
         }
     },
@@ -118,6 +120,13 @@ export default {
                 this.$refs.changeQuantity.focus();
             }
         }, false);
+        this.editSelected.push({
+            name: '',
+            category: '',
+            price: '',
+            quantity_category: '',
+            quantity: 1
+        });
     },
     methods: {
         async getItems() {
@@ -156,9 +165,27 @@ export default {
         },
         chooseItem(index) {
             const data = this.foundList[index]
-            console.log(data);
+            if(this.editSelected != []) {
+                this.editSelected = [];
+            }
+            this.editSelected.push({
+                name: data.name,
+                category: data.category,
+                price: data.price,
+                quantity_category: data.quantity_category,
+                quantity: 1
+            });
+            console.log(this.editSelected);
             return;
-        }
+        },
+        addReceipt() {
+            this.editSelected[0].quantity = this.quantity;
+            if (this.receiptList === null) {
+                this.receiptList = [];
+            }
+            this.receiptList.push(this.editSelected[0]);
+            console.log(this.receiptList);
+        },
     },
     computed: {
         loadingrequest() {
@@ -177,7 +204,7 @@ export default {
 
 <style lang="scss" scoped>
 ::-webkit-scrollbar {
-    width: .3em;
+    width: .35em;
 }
 ::-webkit-scrollbar-track {
     background: #888; 
