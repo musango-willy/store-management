@@ -19,7 +19,7 @@
                 <transition name="changeitems" mode="out-in">
                     <div v-show="itemFound">
                         <transition name="popspinner" mode="out-in">
-                            <table class="item-change" v-if="editSelected != []">
+                            <table class="item-change" v-show="editsection">
                                 <thead>
                                     <tr>
                                         <th><span>Item</span></th>
@@ -33,20 +33,17 @@
                                         <td><span>{{this.editSelected[0].name}}</span></td>
                                         <td><span><input type="number" ref="changeQuantity" v-model="quantity" name=""></span></td>
                                         <td><span>{{this.editSelected[0].quantity_category}}</span></td>
-                                        <td><span>{{this.editSelected[0].price}}</span></td>
+                                        <td><span>Ksh. {{updatePrice}}</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </transition>
-                        <button class="add-cart" v-show="priceESection" @click="addReceipt()">
+                        <button class="add-cart" v-show="editsection" @click="addReceipt()">
                             Add to Cart
                         </button>
                     </div>
                 </transition>
             </div>
-            <button @click="open = true">Open Modal</button>
-            <button v-show="dismissible" @click="dismiss()">Dismis</button>
-            <button v-show="!dismissible" @click="renderr()">Render</button>
             <div
                 class="list-request"
                 v-show="dismissible"
@@ -64,10 +61,16 @@
         </div>
         <div class="right">
             <div class="receipt-list">
-                <Receipt :listToBuy="receiptList" />
+                <Receipt
+                    :listToBuy="receiptList"
+                    :price="totalCash"
+                    @popItem="removeItem"
+                />
             </div>
             <div class="total-amount">
-                <BuyOut />
+                <BuyOut
+                    @submitReceipt="buyItems"
+                />
             </div>
         </div>
         <transition name="popspinner" mode="out-in">
@@ -107,8 +110,11 @@ export default {
             itemsNull: false, // toggle data for items component
             quantityEdit: true, // edit quantity and price toggle
             editSelected: [], // change price before adding receipt
+            editsection: false, // toggle for price and quantity table
             quantity: 1, // change selected item quantity
             receiptList: null, // items to be bought list
+            totalAmount: 0, // total price of items to buy
+            itemPrice: 0, // total item price quantity * price
 
         }
     },
@@ -118,12 +124,13 @@ export default {
 
             if (keyName === '/') {
                 this.$refs.changeQuantity.focus();
+                this.quantity = null;
             }
         }, false);
         this.editSelected.push({
             name: '',
             category: '',
-            price: '',
+            price: 0,
             quantity_category: '',
             quantity: 1
         });
@@ -148,20 +155,9 @@ export default {
                 }
                 this.loading = !this.loading;
                 this.requestFromApi = !this.requestFromApi;
+                this.editsection = true;
                 return;
             }
-        },
-        dismiss() {
-            this.dismissible = !this.dismissible;
-            return
-        },
-        renderr() {
-            this.dismissible = !this.dismissible;
-            setTimeout(function () {
-                let scrol = document.getElementById("leftscroll");
-                scrol.scrollTop = 250;
-            }, 10);
-            return
         },
         chooseItem(index) {
             const data = this.foundList[index]
@@ -175,16 +171,35 @@ export default {
                 quantity_category: data.quantity_category,
                 quantity: 1
             });
-            console.log(this.editSelected);
+            this.foundList = null;
+            this.itemsNull = false;
             return;
         },
-        addReceipt() {
+        addReceipt() { // push to receipt component for change to rc. items
             this.editSelected[0].quantity = this.quantity;
+            this.editSelected[0].price = this.updatePrice;
             if (this.receiptList === null) {
                 this.receiptList = [];
             }
             this.receiptList.push(this.editSelected[0]);
-            console.log(this.receiptList);
+            this.totalAmount = 0;
+            for (let i = 0; i < this.receiptList.length; i++) {
+                const el = this.receiptList[i].price;
+                this.totalAmount += el;
+                
+            }
+            this.editsection = false;
+        },
+        removeItem(index) {
+            const price = this.receiptList[index].price;
+            this.receiptList.splice(index, 1);
+            this.totalAmount -= price; 
+        },
+        async buyItems() {
+            const items = this.receiptList;
+            const res = await axios.post('inventories', items);
+            this.receiptList = null;
+            console.log(res.data);
         },
     },
     computed: {
@@ -196,6 +211,13 @@ export default {
         },
         priceESection() {
             return this.quantityEdit
+        },
+        updatePrice() {
+            const price = this.editSelected[0].price * this.quantity;
+            return price;
+        },
+        totalCash() {
+            return this.totalAmount;
         }
     },
 

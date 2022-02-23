@@ -4,7 +4,7 @@
           <span class="fa fa-print"></span>
       </div>
       <div class="btn">
-          <button>Buy Items</button>
+          <button @click="$emit('submitReceipt')">Buy Items</button>
       </div>
   </div>
 </template>

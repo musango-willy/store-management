@@ -43,7 +43,7 @@
                     <li>
                         <span @click="dropDownAdmin()">
                             <span class="fa fa-charts"></span>
-                            <router-link to="/admin"><button>Admin</button></router-link>
+                            <router-link to="/admin"><button><i class="fa fa-chart"></i> Admin</button></router-link>
                             <span v-show="!exactAdminMenu" class="fa fa-caret-down"></span>
                             <span v-show="exactAdminMenu" class="fa fa-caret-up"></span>
                         </span>

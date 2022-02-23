@@ -8,28 +8,29 @@
             </ul>
         </div>
         <div class="list-body">
-            <ul
-                v-for="(item, index) in itemList" :key="index"
-            >
-                <li>
-                    <span>{{ item.quantity }}</span>
-                    <span>
-                        <p class="left-spa">{{item.name}}</p>
-                        <h6>{{item.quantity_category}}</h6>
-                    </span>
-                    <span>{{item.price}}</span>
-                </li>
-                
+            <transition-group name="list-trans">
+                <ul
+                    v-for="(item, index) in itemList" :key="index"
+                >
+                    <li @dblclick="$emit('popItem', index)">
+                        <span>{{ item.quantity }}</span>
+                        <span>
+                            <p class="left-spa">{{item.name}}</p>
+                            <h6>{{item.quantity_category}}</h6>
+                        </span>
+                        <span>sh.{{item.price}}</span>
+                    </li>
+                    
 
-            </ul>
+                </ul>
+            </transition-group>
         </div>
         <div class="list-footer">
             <ul>
                 <li><span>Total</span></li>
-                <li><span>Ksh. 1000</span></li>
+                <li><span>Ksh. {{this.totalCash}}</span></li>
             </ul>
         </div>
-        {{itemList}}
     </div>
 </template>
 
@@ -38,11 +39,14 @@ export default {
     name: "Receipt",
     props: {
         listToBuy: Object,// items of list to add to receipt
-
+        price: Number,
     },
     computed: {
         itemList() {
             return this.listToBuy;
+        },
+        totalCash() {
+            return this.price;
         }
     },
 
@@ -64,6 +68,18 @@ export default {
     position: relative;
     height: 100%;
 }
+
+.list-trans-enter-active,
+.list-trans-leave-active {
+  transition: all 0.5s ease;
+}
+.list-trans-enter-from,
+.list-trans-leave-to {
+  opacity: 0;
+  height: 0;
+}
+
+
 .list-header {
     position: absolute;
     top: 0%;
@@ -191,6 +207,7 @@ export default {
                     // margin-top: 4px;
                     font-family: Verdana, Geneva, Tahoma, sans-serif;
                     font-size: 20px;
+                    color: #09cebd;
                     border-bottom: 2px solid #000;
                     transition: border 250ms ease,
                         transform 250ms ease;
@@ -200,8 +217,7 @@ export default {
         }
         &:hover {
             li:last-child span {
-                color: rgba(0,0,0,.8);
-                transform: scale3d(1.2, 1,1.2);
+                transform: scale3d(1.15, 1.1,1.15);
                 border-bottom: 2px solid #08e2ab;
             }
         }
