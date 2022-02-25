@@ -1,6 +1,6 @@
 <template>
     <div class="component-page">
-        <apexchart width="1000" height="600" type="line" :options="options" :series="series"></apexchart>
+        <apexchart width="1200" height="620" type="line" :options="options" :series="series"></apexchart>
     </div>
 </template>
 
@@ -36,8 +36,8 @@ export default {
                     enabled: false
                 },
                 colors: ['#086b4a', '#116af0', '#d43810'],
+                stacked: false,
                 grid: {
-                    // position: 'middle',
                     strokeDashArray: 1,
                     row: {
                         colors: ['#031e38'],
@@ -57,22 +57,29 @@ export default {
                     enabled: false
                 },
                 markers: {
-                    size: 4,
+                    size: 0,
                 },
-                
+                fill: {
+                    opacity: [0.85, 0.25, 1],
+                    gradient: {
+                        inverseColors: false,
+                        shade: 'light',
+                        type: "vertical",
+                        opacityFrom: 0.85,
+                        opacityTo: 0.55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
                 plotOptions: {
                     bar: {
                         columnWidth: "65%"
                     },
                     
                 },
-                fill: {
-                    type: 'gradient' // 'pattern' / 'image'
-                },
                 xaxis: {
                     categories: [
                         2009, 2010, 2011, 2012, 2013, 2014, 2015,2016
-                    ]
+                    ],
                 },
                 yaxis: [
                     {
@@ -106,8 +113,8 @@ export default {
                     }
                 ],
                 tooltip: {
-                    shared: false,
-                    intersect: true,
+                    shared: true,
+                    intersect: false,
                     x: {
                         show: false
                     }
