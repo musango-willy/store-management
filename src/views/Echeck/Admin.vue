@@ -4,22 +4,34 @@
 
     </div>
     <div class="bottom-section">
-      <AdminHome />
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import AdminHome from "@/components/Charts/AdminHome"
 export default {
   name: "Admin",
-    components: {
-      AdminHome
-    }
 }
 </script>
 
 <style lang="scss" scoped>
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.5);
+}
+::-webkit-scrollbar-thumb {
+  background: #269748;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-button {
+  background: #000;
+  height: 6px;
+}
+
 .page-view {
   display: block;
   overflow: hidden;
@@ -34,7 +46,6 @@ export default {
   width: 100%;
   height: 80vh;
   overflow: auto;
-  // border-radius: 4px;
   background: linear-gradient(-120deg,#9a9c9c, #9d9e9e);
 }
 </style>

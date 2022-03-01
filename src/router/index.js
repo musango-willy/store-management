@@ -23,7 +23,14 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: () => import(/* webpackChunkName: "checkout" */ '../views/Echeck/Admin.vue')
+    component: () => import(/* webpackChunkName: "admin" */ '../views/Echeck/Admin.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/Admin/dashboard.vue')
+      },
+    ],
   }
 ]
 
