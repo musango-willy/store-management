@@ -1,181 +1,131 @@
 <template>
-    <div class="component-page">
-        <div class="description">
-            {{time_made}}
-            <Description />
-        </div>
-        <div class="chart-section">
-            <apexchart width="1150" height="610" type="line" :options="options" :series="series"></apexchart>
-        </div>
-    </div>
+  <v-chart class="chart" :option="option" />
 </template>
 
 <script>
-import VueApexCharts from "vue3-apexcharts";
+import { use } from "echarts/core";
+import {
+    ToolboxComponent,
+    GridComponent,
+    LegendComponent,
+    TooltipComponent
+} from 'echarts/components';
+import { BarChart, LineChart } from 'echarts/charts';
+import { UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+
+use([
+    ToolboxComponent,
+    TooltipComponent,
+    GridComponent,
+    LegendComponent,
+    BarChart,
+    LineChart,
+    CanvasRenderer,
+    UniversalTransition
+]);
+import VChart, { THEME_KEY } from "vue-echarts";
 import axios from 'axios';
-import Description from "@/components/Description/adminViewAbout.vue"
+
 export default {
-    name: "AdminHome",
+    name: "HelloWorld",
     components: {
-        "apexchart": VueApexCharts,
-        Description,
+        VChart
     },
-    mounted() {
-        this.getItems();
+    provide: {
+        [THEME_KEY]: "dark"
+    },
+    created() {
+        this.getData();
     },
     data() {
         return {
-            quantity_sold: [],
-            amount_made: [],
-            time_made: [],
-            series: [
-    
-                {
-                    name: 'Column A',
-                    type: 'column',
-                    data: [],//[50,30,10,80,100],
-                    color: '#086b4a'
-                },
-                // {
-                //     name: "Column B",
-                //     type: 'column',
-                //     data: [10, 19, 27, 26, 34, 35, 40, 38],
-                //     color: '#116af0',
-                //     opacity: 0.9
-                // },
-                {
-                    name: "Line C",
-                    type: 'line',
-                    data: [],//[10,4,6,20,40],
-                    color: '#d43810',
-                },
-            ],
-            options: {
-                // chart: {
-                //     height: '10'
-                // },
-                dataLabels: {
-                    enabled: false
-                },
-                stacked: false,
-                theme: {
-                    mode: 'dark'
-                },
-                grid: {
-                    strokeDashArray: 1,
-                    row: {
-                        colors: ['#0000000'],
-                        opacity: 0.25
-                    },
-                    xaxis: {
-                        lines: {
-                            show: false
+            quantity_sold:[],
+            amount_made:[],
+            time_made:[],
+            option: {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                            color: '#999'
                         }
                     }
                 },
-                stroke: {
-                    width: [1,2.5],
-                    curve: 'smooth'
+                legend: {
+                    show: true,
+                    padding: [
+                        15,  // up
+                        10, // right
+                        15,  // down
+                        15, // left
+                    ]
+                    // data: ['Evaporation', 'Precipitation', 'Temperature']
                 },
-                zoom: {
-                    enabled: false
-                },
-                markers: {
-                    size: 0,
-                },
-                fill: {
-                    opacity: 1,
-                    gradient: {
-                        inverseColors: false,
-                        shade: 'light',
-                        type: "vertical",
-                        opacityFrom: 0.85,
-                        opacityTo: 0.55,
-                        stops: [0, 100, 100, 100]
-                    }
-                },
-                plotOptions: {
-                    bar: {
-                        columnWidth: "50%",
-                        borderRadius: 4,
-                    },
-                    
-                },
-                xaxis: {
-                    categories: null,//['8:30','9:00','9:30','10:00','10:30',],
-                    // tickAmount: 15,
-                    convertedCatToNumeric: false,
-                    axisBorder: {
-                        show: false,
-                    },
-                },
-                yaxis: [
+                xAxis: [
                     {
-                        seriesName: "Column A",
-                        axisTicks: {
-                            show: true,
-                            color: '#fff',
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: '#fff',
-                            width: 0.3,
-                        },
-                        title: {
-                            text: "Columns"
-                        },
-                    },
-                    {
-                        opposite: true,
-                        seriesName: "Line C",
-                        axisTicks: {
-                            show: true
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: '#e98706',
-                            width: 0.5,
-                        },
-                        title: {
-                            text: "Line"
+                        type: 'category',
+                        data: [],//['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        axisPointer: {
+                            type: 'shadow'
                         }
                     }
                 ],
-                tooltip: {
-                    shared: true,
-                    intersect: false,
-                    x: {
-                        show: true,
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'Amount',
+                        // min: 0,
+                        // max: 250,
+                        // interval: 50,
+                        axisLabel: {
+                            formatter: 'Ksh.{value}'
+                        }
                     },
-                    offsetX: 30
-                },
-                legend: {
-                    horizontalAlign: "left",
-                    position: 'bottom',
-                    offsetX: 50,
-                    // offsetY: 5,
-                    fontSize: '16px',
-                    // width: 500,
-                    // height: 35,
-                    markers: {
-                        width: 28,
-                        height: 24,
-                        strokeWidth: '2px',
-                        strokeColor: '#000',
-                        radius: '4px',
-                        offsetY: 5
+                    {
+                        type: 'value',
+                        name: 'Quantity',
+                        // min: 0,
+                        // max: 25,
+                        // interval: 5,
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Amount',
+                        type: 'bar',
+                        tooltip: {
+                            valueFormatter: function (value) {
+                            return 'Ksh.'+value;
+                        }
+                        },
+                        data: [],//[
+                            //2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
+                        //]
                     },
-                }
-            }
+                    {
+                        name: 'Quantity',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        tooltip: {
+                            valueFormatter: function (value) {
+                                return value + ' items';
+                            }
+                        },
+                        data: [],//[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+                        smooth: true
+                    }
+                ]
+            },
+            // ------------------
         }
     },
     methods: {
-        updateChart() {
-            this.series[0].data = this.amount_made;
-            this.series[1].data = this.quantity_sold;
-            this.options.xaxis.categories = this.time_made;
-        },
-        async getItems() {
+        async getData() {
             try {
                 const res = await axios.get('invent')
                 const data = res.data;
@@ -188,36 +138,22 @@ export default {
                     this.time_made.push(time_data);
                     
                 }
-                this.updateChart();
                 // console.log(this.time_made);
+                this.option.xAxis[0].data = this.time_made;
+                this.option.series[0].data = this.amount_made;
+                this.option.series[1].data = this.quantity_sold;
             } catch(e) {
                 console.error(e);
             }
-        },
+        }
     }
 
 }
 </script>
 
-<style lang="scss" scoped>
-.component-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+<style scoped>
+.chart {
+  height: 600px;
+  width: 100%;
 }
-.description {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-}
-.chart-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    width: 100%;
-}
-
 </style>
