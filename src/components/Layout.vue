@@ -5,13 +5,8 @@
                 <div class="logo">
                     <span class="fa fa-home"></span>
                 </div>
-                <div class="links">
-                    <router-link to="/">Home</router-link>
-                    <router-link to="/about">About</router-link>
-                </div>
             </div>
             <div class="right">
-                <h6><span class="fa fa-cog"></span></h6>
                 <h6>
                     <span class="fa fa-user">
                         <span class="fa fa-caret-down"></span>
@@ -24,46 +19,17 @@
         </div>
         <div class="body-content">
             <div class="side-bar">
-                <ul>
-                    <li><span>Home</span></li>
-                    <li>
-                        <span @click="dropDownEcheck()">
-                            <button>E-check</button>
-                            <span v-show="!exactEcheckMenu" class="fa fa-caret-down"></span>
-                            <span v-show="exactEcheckMenu" class="fa fa-caret-up"></span>
-                        </span>
-                        <transition name="drop" mode="out-in">
-                            <ul v-show="exactEcheckMenu">
-                                <li><router-link to="/checkout"><button>Dashboard</button></router-link></li>
-                                <li><router-link to="/about"><button>Receipts</button></router-link></li>
-                                <li><router-link to="/about"><button>Total</button></router-link></li>
-                            </ul>
-                        </transition>
-                    </li>
-                    <li>
-                        <span @click="dropDownAdmin()">
-                            <span class="fa fa-charts"></span>
-                            <router-link to="/admin"><button><i class="fa fa-chart-line"></i> Admin</button></router-link>
-                            <span v-show="!exactAdminMenu" class="fa fa-caret-down"></span>
-                            <span v-show="exactAdminMenu" class="fa fa-caret-up"></span>
-                        </span>
-                        <transition name="drop" mode="out-in">
-                            <ul v-show="exactAdminMenu">
-                                <li><router-link to="/"><button>Dashboard</button></router-link></li>
-                                <li><router-link to="/about"><button>Products</button></router-link></li>
-                                <li><router-link to="/about"><button>Inventories</button></router-link></li>
-                            </ul>
-                        </transition>
-                    </li>
-                </ul>
-                <div class="side-footer">
-                    <ul>
-                        <li><span class="fa fa-facebook"></span></li>
-                        <li><span class="fa fa-facebook"></span></li>
-                        <li><span class="fa fa-facebook"></span></li>
-                        <li><span class="fa fa-reddit"></span></li>
-                    </ul>
-                </div>
+                <h2><router-link to="/"><span class="fa fa-home"></span>Home</router-link></h2>
+                <h2>
+                    E-check
+                    <div class="children">
+                        <router-link to="/checkout"><span class="fa fa-bars"></span> dashboard</router-link>
+                        <router-link to="/"><span class="fa fa-file"></span> receipt</router-link>
+                        <router-link to="/"><span class="fa fa-user"></span> user</router-link>
+                    </div>
+                </h2>
+                <h2><router-link to="/admin"><span class="fa fa-bar-chart"></span> Admin</router-link></h2>
+                <h2><router-link to="/products"><span class="fa fa-database"></span> Products</router-link></h2>
             </div>
             <div class="context-side">
                 <router-view v-slot="{ Component }">
@@ -82,7 +48,6 @@ export default {
     data() {
         return {
             echeckMenu: true,
-            adminMenu: true,
         }
     },
     created() {
@@ -91,10 +56,6 @@ export default {
     methods: {
         dropDownEcheck() {
             this.echeckMenu = !this.echeckMenu
-            return
-        },
-        dropDownAdmin() {
-            this.adminMenu = !this.adminMenu
             return
         },
         
@@ -126,7 +87,7 @@ export default {
     opacity: 0;
 }
 .routes-enter-active, .routes-leave-active {
-    transition: opacity 0.5s ease-out;
+    transition: opacity 0.25s ease-out;
 }
 .drop-enter-from, .drop-leave-to {
     opacity: 0;
@@ -160,7 +121,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100vw;
-    height: 45px;
+    height: 6%;
     background: #0e3f6d;
     .left {
         display: flex;
@@ -249,9 +210,7 @@ export default {
 .side-bar {
     position: relative;
     float: left;
-    // background: #aeaeaf;
     background: linear-gradient(to right, #94a6bb, #afafbb);
-    // color: #2c3e50;
     min-width: 200px;
     max-width: 250px;
     height: 93.5%;
@@ -261,154 +220,133 @@ export default {
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 0 0 3px #000;
+    display: flex;
+    flex-direction: column;
 
-    ul {
-        // width: 104%;
-        margin-bottom: 32%;
-        transition: height 250ms ease-in-out;
-        li {
-            list-style: none;
-            line-height: 50px;
-            padding: 0 4px;
-            border-bottom: 1px solid rgba(0,0,0,.4);
+    h2 {
+        width: 100%;
+        color: #000;
+        background: transparent;
+        margin-top: 0.4rem;
+        min-height: 3rem;
+        padding: 8px 8px;
+        font-size: 18px;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        border-bottom: 1px solid rgba(0,0,0,0.5);
+        position: relative;
+        transition: border 250ms ease;
+
+        a {
+            text-decoration: none;
+            font-size: 18px;
+            padding: 8px 0;
+            color: #052329;
+            width: 100%;
+            display: block;
+            transition: margin 250ms ease;
+            letter-spacing: 1px;
+
             span {
-                position: relative;
-                font-weight: 1000;
-                font-size: 16px;
-
-                button {
-                    width: 100%;
-                    height: 40px;
-                    padding: 0 3px;
-                    text-align: left;
-                    background: transparent;
-                    height: 36px;
-                    border: none;
-                    border-radius: 4px;
-                    font-weight: 1000;
-                    color: #2c3e50;
-                    cursor: pointer;
-                    transition: box-shadow 300ms ease,
-                        padding 300ms ease;
-                    &:hover {
-                        padding: 0 6px;
-                        box-shadow: 0 0 3px #000;
-                    }
-                }
-                span {
+                margin-right: 4px;
+            }
+            &.router-link-exact-active {
+                color: #0e3f6d;
+                margin-left: 2px;
+                &::before {
+                    content: '';
                     position: absolute;
-                    right: 0%;
-                    top: -10%;
-                    width: 35%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 17px;
-                    cursor: pointer;
-                    transition: color 250ms ease;
-                    &:hover {
-                        color: #ec111c;
-                    }
-                }
-            }
+                    left: 0%;
+                    top: 0%;
+                    width: 5px;
+                    height: 100%;
+                    background: #1a575c;
 
-            ul {
-                position: static;
-                padding: 0 15px;
-                margin: 0;
-                // display: none;
-                li {
-                    line-height: 42px;
-                    // padding: 0 24px;
-                    border-bottom: none;
-                    border-left: none;
-                    a {
-                        color: inherit;
-                        text-decoration: none;
-                        font-size: 14px;
-                        button {
-                            width: 100%;
-                            height: 40px;
-                            background: transparent;
-                            border: none;
-                            cursor: pointer;
-                            text-align: left;
-                            transition: color 250ms ease,
-                                padding 300ms ease;
-                            &:hover {
-                                padding: 0 4px;
-                                color: #0e3f6d;
-                                font-weight: bold;
-                            }
-                        }
-                        
-                        &.router-link-exact-active {
-                            button {
-                                padding: 0 4px;
-                                letter-spacing: 1px;
-                                color: #642561;
-                                box-shadow: 0 0 5px #000;
-                                transform: scale3d(1.08,1,1.1);
-                            }
-                        }
-                    }
-                    &:nth-child(1), &:nth-child(2),&:nth-child(3),
-                    &:nth-child(4) {
-                        // width: 50%;
-                        transition: box-shadow 400ms ease;
-                        border-bottom: .1em solid #000;
-                        &:hover {
-                            border-left: 2px solid orangered;
-                            box-shadow: 0 0 5px #000;
-
-                        }
-                    }
-                    &:last-of-type {
-                        margin-bottom: 4px;
-                    }
-                }
-            }
-            &:nth-child(1) {
-                cursor: pointer;
-                transition: color 250ms ease,
-                    padding 250ms ease,
-                    box-shadow 250ms ease;
-                &:hover {
-                    padding: 0 6px;
-                    border-left: 2px solid cyan;
-                    color: #642561;
-                    box-shadow: 0 0 25px rgba(0,0,0,.3);
                 }
             }
         }
-    }
-    .side-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        margin: 6px 0;
-        width: 184px;
-        height: 6%;
-        box-shadow: 0 0 25px rgba(0,0,0,.3);
-        // height: 2px;
 
-        ul {
+        .children {
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            align-items: center;
+            width: 100%;
+            padding: 0 12px;
 
-            li {
-                padding: 0 4px;
-                border-bottom: none;
+            a {
+                color: #1b334e;
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                height: 2.5rem;
+                width: 100%;
+                padding: 8px 6px;
+                font-size: 16px;
+                position: relative;
+                border-bottom: 1px solid #888;
+                transition: box 250ms ease;
+
+                &:nth-child(1) {
+                    margin-top: 8px;
+                }
+                &.router-link-exact-active {
+                    color: #334d68;
+                    border-bottom: 1px solid rgba(0,0,0,0.8);
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0%;
+                        width: 4px;
+                        height: 100%;
+                        background: #3e74b3;
+
+                    }
+                }
+                &:hover {
+                    padding-left: 12px;
+                    box-shadow: 0px 0px 5px #fff;
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0%;
+                        width: 3px;
+                        height: 100%;
+                        background: #1a575c;
+
+                    }
+                }
             }
+        }
+        &:hover {
+            &:nth-child(1), &:nth-child(3), &:nth-child(4) {
+                border-bottom: 1.5px solid rgba(0,0,0,0.9);
+                a {
+                    margin-left: 6px;
+                }
+                &::before {
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    top: 0%;
+                    height: 100%;
+                    width: 4px;
+                    background: blue;
+                }
+            }
+
         }
     }
 }
+
 .context-side {
     padding: 0;
     margin: 0;
+    width: 100%;
+    height: 92%;
+    // overflow-y: auto;
 }
-
 @media print {
     * {
         background: transparent !important;

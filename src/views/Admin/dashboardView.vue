@@ -1,5 +1,9 @@
 <template>
-  <v-chart class="chart" :option="option" />
+    <div class="dashboard">
+        <div class="chart-section">
+            <v-chart class="chart" :option="option" />
+        </div>
+    </div>
 </template>
 
 <script>
@@ -8,13 +12,15 @@ import {
     ToolboxComponent,
     GridComponent,
     LegendComponent,
-    TooltipComponent
+    TooltipComponent,
+    TitleComponent,
 } from 'echarts/components';
 import { BarChart, LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
 use([
+    TitleComponent,
     ToolboxComponent,
     TooltipComponent,
     GridComponent,
@@ -53,6 +59,17 @@ export default {
                         }
                     }
                 },
+                title: {
+                    show: true,
+                    text: 'Sales of the day',
+                    textStyle: {
+                        fontWeight: 'bold',
+                        fontSize: 24,
+                        height: 80,
+                    },
+                    padding: 10,
+                    top: 0,
+                },
                 legend: {
                     show: true,
                     padding: [
@@ -60,13 +77,17 @@ export default {
                         10, // right
                         15,  // down
                         15, // left
-                    ]
-                    // data: ['Evaporation', 'Precipitation', 'Temperature']
+                    ],
+                    itemWidth: 30,
+                    itemHeight: 30,
+                    textStyle: {
+                        fontSize: 20
+                    },
                 },
                 xAxis: [
                     {
                         type: 'category',
-                        data: [],//['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        data: [],
                         axisPointer: {
                             type: 'shadow'
                         }
@@ -76,9 +97,6 @@ export default {
                     {
                         type: 'value',
                         name: 'Amount',
-                        // min: 0,
-                        // max: 250,
-                        // interval: 50,
                         axisLabel: {
                             formatter: 'Ksh.{value}'
                         }
@@ -86,9 +104,6 @@ export default {
                     {
                         type: 'value',
                         name: 'Quantity',
-                        // min: 0,
-                        // max: 25,
-                        // interval: 5,
                         axisLabel: {
                             formatter: '{value}'
                         }
@@ -103,9 +118,7 @@ export default {
                             return 'Ksh.'+value;
                         }
                         },
-                        data: [],//[
-                            //2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-                        //]
+                        data: [],
                     },
                     {
                         name: 'Quantity',
@@ -116,7 +129,7 @@ export default {
                                 return value + ' items';
                             }
                         },
-                        data: [],//[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+                        data: [],
                         smooth: true
                     }
                 ]
@@ -151,9 +164,28 @@ export default {
 }
 </script>
 
-<style scoped>
-.chart {
-  height: 600px;
-  width: 100%;
+<style lang="scss" scoped>
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+.chart-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: 82%;
+    border-radius: 1rem;
+    background: #0c1130;
+
+    .chart {
+        height: 98%;
+        width: 98%;
+    }
 }
 </style>

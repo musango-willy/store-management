@@ -1,10 +1,13 @@
 <template>
   <div class="home">
+
+    <h2>Store management & data analysis software</h2>
+
     <!-- -------------------------- -->
-    <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <!-- <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> -->
 
     <!-- ----------------------------------- -->
-    <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <!-- <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> -->
   </div>
 </template>
 
@@ -18,6 +21,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.home {
+  // margin-left: 4rem;
+  padding: 4px;
+  height: 100%;
+  // width: 100%;
+  background: url('home.svg') no-repeat;
+  background-color: #abc;
+  background-size: cover;
+
+  color: #000;
+  display: flex;
+  justify-content: center;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-top: 3rem;
+    margin-right: 30%;
+  }
+}
 
 // -------------------------------------------------
 

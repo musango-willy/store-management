@@ -30,8 +30,5 @@ a {
   font-weight: bold;
   color: #fff;
 
-  &.router-link-exact-active {
-    color: #42b983;
-  }
 }
 </style>

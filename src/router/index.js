@@ -23,12 +23,34 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: () => import(/* webpackChunkName: "admin" */ '../views/Echeck/Admin.vue'),
+    component: () => import(/* webpackChunkName: "admin" */ '../views/Echeck/AdminView.vue'),
     children: [
       {
         path: '',
         name: 'Dashboard',
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/Admin/dashboard.vue')
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/Admin/dashboardView.vue')
+      },
+      {
+        path: 'profits',
+        name: 'Profits',
+        component: () => import(/* webpackChunkName: "profits" */ '../views/Admin/profitsView.vue')
+      },
+    ],
+  },
+  {
+    path: '/products',
+    name: 'Products',
+    component: () => import(/* webpackChunkName: "Products" */ '../views/Products/ProductsHome.vue'),
+    children: [
+      {
+        path: '',
+        name: 'productsHome',
+        component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Products/DashboardView.vue')
+      },
+      {
+        path: 'addProducts',
+        name: 'addProducts',
+        component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Products/AddProducts.vue')
       },
     ],
   }
