@@ -17,7 +17,10 @@
               <div class="catitems"
                 v-for="(catgroup_items, count) in cat.category_group" :key="count"
               >
-                <p>{{catgroup_items.name}}</p>
+                <ul>
+                  <li>{{catgroup_items.name}}</li>
+                </ul>
+                <!-- <p><span>.</span>{{catgroup_items.name}}</p> -->
               </div>
             </td>
           </tr>
@@ -112,22 +115,28 @@ export default {
       // min-height: 5rem;
       tr {
         min-height: 5rem;
-        border-bottom: 1px dashed #000;
+        border: 1px solid #000;
+        border-top: none;
         td {
           &:nth-child(1) {
             padding-top: 1rem;
+            font-size: 18px;
+            font-weight: 700;
+            background: #e8f0ec;
           }
           height: 100%;
           &:nth-child(2) {
             display: flex;
             align-items: center;
             padding-left: 1.4rem;
+            font-size: 20px;
+            font-weight: 700;
           }
           &:nth-child(3) {
             display: flex;
             align-items: center;
             flex-direction: column;
-            background: #fff;
+            background: #e2f3e9;
           }
         }
       }
@@ -138,17 +147,38 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-left: 1rem;
+  height: 100%;
+  padding-left: 2rem;
 
-  p {
-    margin: 1rem 8px;
-    font-size: 16px;
-    font-weight: 400;
-    width: 100%;
-    // height: 1rem;
-    display: flex;
-    align-items: flex-start;
-    // justify-content: flex-start;
+  ul {
+    margin-top: 1rem;
+    // height: 100%;
+    li {
+      height: 3rem;
+      font-size: 18px;
+      font-weight: 540;
+      font-style: oblique;
+    }
   }
+
+
+  // p {
+  //   margin: 1rem 8px;
+  //   font-size: 18px;
+  //   font-weight: 550;
+  //   font-style: oblique;
+  //   width: 100%;
+  //   height: 100%;
+  //   display: flex;
+  //   align-items: flex-start;
+  //   // justify-content: flex-start;
+  //   span {
+  //     // height: 100%;
+  //     margin-right: 0.5rem;
+  //     margin-bottom: 0.4rem;
+  //     display: flex;
+  //     font-size: 22px;
+  //   }
+  // }
 }
 </style>

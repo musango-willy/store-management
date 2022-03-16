@@ -197,7 +197,7 @@ export default {
     border-bottom-left-radius: 100%;
     border-bottom-right-radius: 100%;
     // background: transparent;
-    background: linear-gradient(to right, #cf3baa, #2dceda);
+    background: linear-gradient(to right, #cf3baa, #2dceda, #cf3baa);
 }
 .body-content {
     position: relative;
@@ -210,7 +210,7 @@ export default {
 .side-bar {
     position: relative;
     float: left;
-    background: linear-gradient(to right, #94a6bb, #afafbb);
+    background: linear-gradient(120deg, #94a6bb, #afafbb, #dad7cd);
     min-width: 200px;
     max-width: 250px;
     height: 93.5%;

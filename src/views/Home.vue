@@ -28,7 +28,9 @@ export default {
   height: 100%;
   // width: 100%;
   background: url('home.svg') no-repeat;
-  background-color: #abc;
+  // background-position: right;
+  background-size: 80%;
+  background-color: #f1faee;
   background-size: cover;
 
   color: #000;
@@ -36,10 +38,25 @@ export default {
   justify-content: center;
 
   h2 {
+    height: 6%;
     font-size: 24px;
     font-weight: 800;
     margin-top: 3rem;
     margin-right: 30%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &::after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 2px;
+      top: 98%;
+      background: #000;
+    }
   }
 }
 
